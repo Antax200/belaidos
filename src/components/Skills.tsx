@@ -1,6 +1,6 @@
 import React from 'react';
 import { Code, PenTool, Video } from 'lucide-react';
-import { Skill } from '../types';
+import type { Skill } from '../types';
 
 const getSkillColor = (category: string) => {
   switch (category) {
@@ -31,19 +31,14 @@ const getSkillColor = (category: string) => {
   }
 };
 
-const skills: Skill[] = [
-  // Development Skills
-  { name: 'React', level: 90, category: 'development' },
-  { name: 'TypeScript', level: 85, category: 'development' },
-  { name: 'Node.js', level: 80, category: 'development' },
-  // Design Skills
-  { name: 'Figma', level: 95, category: 'design' },
-  { name: 'Adobe Photoshop', level: 90, category: 'design' },
-  { name: 'Adobe Illustrator', level: 85, category: 'design' },
-  // Video Skills
-  { name: 'Premiere Pro', level: 90, category: 'video' },
-  { name: 'After Effects', level: 85, category: 'video' },
-  { name: 'DaVinci Resolve', level: 75, category: 'video' },
+const skillsList: Skill[] = [
+  { name: 'React', level: 90, category: 'frontend' },
+  { name: 'TypeScript', level: 85, category: 'frontend' },
+  { name: 'Node.js', level: 80, category: 'backend' },
+  { name: 'Figma', level: 85, category: 'design' },
+  { name: 'Adobe CC', level: 90, category: 'design' },
+  { name: 'Premiere Pro', level: 85, category: 'video' },
+  { name: 'After Effects', level: 80, category: 'video' }
 ];
 
 const Skills: React.FC = () => {
@@ -69,7 +64,7 @@ const Skills: React.FC = () => {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Development</h3>
             </div>
             <div className="space-y-6">
-              {skills
+              {skillsList
                 .filter(skill => skill.category === 'development')
                 .map((skill, index) => (
                   <div key={index}>
@@ -97,7 +92,7 @@ const Skills: React.FC = () => {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Design</h3>
             </div>
             <div className="space-y-6">
-              {skills
+              {skillsList
                 .filter(skill => skill.category === 'design')
                 .map((skill, index) => (
                   <div key={index}>
@@ -125,7 +120,7 @@ const Skills: React.FC = () => {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Video</h3>
             </div>
             <div className="space-y-6">
-              {skills
+              {skillsList
                 .filter(skill => skill.category === 'video')
                 .map((skill, index) => (
                   <div key={index}>

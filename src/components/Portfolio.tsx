@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { projects } from '../data/projects';
-import { Project } from '../types';
+import type { Project } from '../types';
 
 const categories = [
   { id: 'all', label: 'All Work' },
@@ -16,7 +16,7 @@ const Portfolio: React.FC = () => {
 
   const filteredProjects = activeCategory === 'all' 
     ? projects 
-    : projects.filter(project => project.category === activeCategory);
+    : projects.filter((project: Project) => project.category === activeCategory);
 
   return (
     <section id="portfolio" className="py-20 bg-gray-50 dark:bg-gray-800">

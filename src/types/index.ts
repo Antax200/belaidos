@@ -29,3 +29,10 @@ export interface Service {
   icon: string;
   description: string;
 }
+
+export interface Skill {
+  name: string;
+  level: number;
+  icon?: string;
+  category?: string;
+}
