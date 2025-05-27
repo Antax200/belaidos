@@ -7,6 +7,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    assetsDir: 'assets',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -17,5 +18,8 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['lucide-react']
+  },
+  server: {
+    host: true
   }
 });
