@@ -64,7 +64,7 @@ const Hero: React.FC = () => {
       </style>
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-teal-400/30 via-teal-500/20 to-teal-600/10 dark:opacity-100 opacity-0"></div>
-        <div className="absolute inset-0 bg-[url('/Prince V.jpg')] bg-cover bg-center bg-no-repeat opacity-80 dark:opacity-50"></div>
+        <div className="absolute inset-0 bg-[url('Prince V.jpg')] bg-cover bg-center bg-no-repeat opacity-80 dark:opacity-50"></div>
       </div>
       
       <div className="container mx-auto px-4 md:px-6 z-10 text-center">
