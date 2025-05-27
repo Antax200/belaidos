@@ -36,7 +36,7 @@ const About: React.FC = () => {
             <div className="relative">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden mx-auto">
                 <img 
-                  src="https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d"
+                  src="https://i.ibb.co/27zJVDy3/me.png"
                   alt="Profile" 
                   className="w-full h-full object-cover"
                   loading="lazy"
