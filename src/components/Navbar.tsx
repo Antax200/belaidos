@@ -44,7 +44,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode }) => {
             scrolled ? 'text-indigo-600 dark:text-indigo-400' : 'text-white dark:text-indigo-400'
           }`}>
             <img 
-              src="/logo antax.png" 
+              src="./logo antax.png" 
               alt="ANTAX" 
               className="h-10 w-auto"
             />

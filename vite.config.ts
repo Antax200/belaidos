@@ -7,19 +7,19 @@ export default defineConfig({
   base: '/belaidos/',
   build: {
     outDir: 'dist',
-    assetsDir: 'assets',
+    emptyOutDir: true,
     rollupOptions: {
       output: {
         manualChunks: {
-          'lucide-react': ['lucide-react'],
+          'lucide-react': ['lucide-react']
         },
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
-      },
-    },
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js'
+      }
+    }
   },
   optimizeDeps: {
-    include: ['lucide-react'],
-  },
+    include: ['lucide-react']
+  }
 });
