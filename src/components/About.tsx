@@ -35,13 +35,17 @@ const About: React.FC = () => {
           <div className="md:w-1/2 mb-10 md:mb-0 md:pr-10 animate-on-scroll" data-animation="animate-fadeInLeft">
             <div className="relative">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden mx-auto">
-                <img 
-                  src="/me.optimized.webp" 
-                  alt="Profile" 
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture>
+                  <source srcSet="/me.optimized.webp" type="image/webp" />
+                  <source srcSet="/me.png" type="image/png" />
+                  <img 
+                    src="/me.png"
+                    alt="Profile" 
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-teal-400 dark:bg-teal-400 rounded-full opacity-20"></div>
               <div className="absolute -top-6 -left-6 w-24 h-24 bg-teal-500 dark:bg-teal-500 rounded-full opacity-20"></div>

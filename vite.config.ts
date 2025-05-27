@@ -12,7 +12,8 @@ export default defineConfig({
       output: {
         manualChunks: {
           'lucide-react': ['lucide-react']
-        }
+        },
+        assetFileNames: 'assets/[name].[ext]'
       }
     }
   },
@@ -20,6 +21,7 @@ export default defineConfig({
     include: ['lucide-react']
   },
   server: {
+    port: 3000,
     host: true
   },
   publicDir: 'public'
