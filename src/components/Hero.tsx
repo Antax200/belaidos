@@ -66,7 +66,7 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-teal-400/30 via-teal-500/20 to-teal-600/10 dark:opacity-100 opacity-0"></div>
         <div className="absolute inset-0 opacity-80 dark:opacity-50">
           <img 
-            src="https://images.unsplash.com/photo-1661956602116-aa6865609028"
+            src="https://i.ibb.co/YT7RjRRq/Prince-V.jpg"
             alt="Hero Background"
             className="w-full h-full object-cover"
             loading="eager"
