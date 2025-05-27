@@ -11,10 +11,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'lucide-react': ['lucide-react']
-        },
-        assetFileNames: 'assets/[name]-[hash][extname]',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js'
+        }
       }
     }
   },
