@@ -6,6 +6,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        'dancing-script': ['"Dancing Script"', 'cursive'],
+        'allura': ['Allura', 'cursive'],
       },
       colors: {
         teal: {

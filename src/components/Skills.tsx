@@ -32,13 +32,18 @@ const getSkillColor = (category: string) => {
 };
 
 const skillsList: Skill[] = [
-  { name: 'React', level: 90, category: 'frontend' },
-  { name: 'TypeScript', level: 85, category: 'frontend' },
-  { name: 'Node.js', level: 80, category: 'backend' },
+  { name: 'React', level: 90, category: 'development' },
+  { name: 'TypeScript', level: 85, category: 'development' },
+  { name: 'Next.js', level: 85, category: 'development' },
+  { name: 'TailwindCSS', level: 88, category: 'development' },
   { name: 'Figma', level: 85, category: 'design' },
-  { name: 'Adobe CC', level: 90, category: 'design' },
+  { name: 'Photoshop', level: 90, category: 'design' },
+  { name: 'Illustrator', level: 85, category: 'design' },
+  { name: 'InDesign', level: 82, category: 'design' },
   { name: 'Premiere Pro', level: 85, category: 'video' },
-  { name: 'After Effects', level: 80, category: 'video' }
+  { name: 'After Effects', level: 80, category: 'video' },
+  { name: 'DaVinci Resolve', level: 82, category: 'video' },
+  { name: 'Final Cut Pro', level: 78, category: 'video' }
 ];
 
 const Skills: React.FC = () => {

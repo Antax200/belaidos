@@ -66,7 +66,7 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-teal-400/30 via-teal-500/20 to-teal-600/10 dark:opacity-100 opacity-0"></div>
         <div className="absolute inset-0 opacity-80 dark:opacity-50">
           <img 
-            src="https://i.ibb.co/YT7RjRRq/Prince-V.jpg"
+            src="https://i.ibb.co/jvFHwtDw/TEST-ANTA.jpg"
             alt="Hero Background"
             className="w-full h-full object-cover"
             loading="eager"
@@ -75,7 +75,7 @@ const Hero: React.FC = () => {
         </div>
       </div>
       
-      <div className="container mx-auto px-4 md:px-6 z-10 text-center">
+      <div className="container mx-auto px-4 md:px-6 z-10 text-center mt-[40vh]">
         <h1 
           ref={headingRef}
           className="text-4xl md:text-3xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6"
@@ -83,13 +83,13 @@ const Hero: React.FC = () => {
         >
           <div className="relative flex flex-col items-center">
             <div className="fade-in-up delay-300 transform hover:-translate-y-1 transition-transform">
-              <span className="relative">
-                Bringing <span className="text-indigo-600 dark:text-indigo-400">Creative Ideas</span>
+              <span className="relative font-dancing-script text-5xl md:text-5xl lg:text-6xl">
+                 <span className="text-indigo-600 dark:text-indigo-400 font-allura text-5xl md:text-5xl lg:text-5xl"></span>
               </span>
             </div>
             <div className="fade-in-up delay-600 mt-2 md:mt-4 transform hover:-translate-y-1 transition-transform">
-              <span className="relative inline-block">
-                to Life
+              <span className="relative inline-block font-dancing-script text-5xl md:text-5xl lg:text-6xl">
+                
               </span>
             </div>
           </div>
