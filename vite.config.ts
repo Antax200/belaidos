@@ -13,7 +13,15 @@ export default defineConfig({
         manualChunks: {
           'lucide-react': ['lucide-react']
         },
-        assetFileNames: 'assets/[name].[ext]'
+        assetFileNames: (assetInfo) => {
+          if (!assetInfo.name) return 'assets/[name].[ext]';
+          const info = assetInfo.name.split('.');
+          const ext = info[info.length - 1];
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
+            return `assets/images/[name].[ext]`;
+          }
+          return `assets/[name].[ext]`;
+        }
       }
     }
   },
