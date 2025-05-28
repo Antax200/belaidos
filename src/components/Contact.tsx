@@ -58,9 +58,9 @@ const Contact: React.FC = () => {
     
     if (validateForm()) {
       setIsSubmitting(true);
+      setErrors({});
       
       try {
-        console.log('Sending message...');
         const response = await fetch('/api/messages', {
           method: 'POST',
           headers: {
@@ -70,20 +70,15 @@ const Contact: React.FC = () => {
         });
 
         let data;
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.indexOf("application/json") !== -1) {
+        try {
           data = await response.json();
-        } else {
-          // If response is not JSON, get the text
-          const text = await response.text();
-          console.error('Received non-JSON response:', text);
-          throw new Error('Server error: Received non-JSON response');
+        } catch (error) {
+          console.error('Failed to parse response:', error);
+          throw new Error('Server error: Invalid response format');
         }
 
-        console.log('Server response:', data);
-        
         if (!response.ok) {
-          throw new Error(data.error || data.details || 'Failed to send message');
+          throw new Error(data.error || data.message || 'Failed to send message');
         }
         
         setSubmitSuccess(true);
