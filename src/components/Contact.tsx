@@ -60,9 +60,19 @@ const Contact: React.FC = () => {
       setIsSubmitting(true);
       
       try {
-        // Here you would typically make an API call to your backend
-        // For now, we'll simulate a successful submission
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        const response = await fetch('/api/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to send message');
+        }
         
         setSubmitSuccess(true);
         setFormData({
@@ -78,7 +88,7 @@ const Contact: React.FC = () => {
       } catch (error) {
         setErrors(prev => ({
           ...prev,
-          submit: 'Failed to send message. Please try again later.'
+          submit: error instanceof Error ? error.message : 'Failed to send message. Please try again later.'
         }));
       } finally {
         setIsSubmitting(false);
