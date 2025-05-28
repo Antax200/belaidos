@@ -61,10 +61,11 @@ const Contact: React.FC = () => {
       setErrors({});
       
       try {
-        const response = await fetch('/api/messages', {
+        const response = await fetch('https://antax-website-backend.vercel.app/api/messages', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json'
           },
           body: JSON.stringify(formData),
         });
