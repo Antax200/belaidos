@@ -15,52 +15,80 @@ const Message = mongoose.models.Message || mongoose.model('Message', messageSche
 
 // Connect to MongoDB
 const connectDB = async () => {
-  if (mongoose.connections[0].readyState) {
-    console.log('Using existing MongoDB connection');
-    return;
-  }
-
   try {
-    console.log('Attempting to connect to MongoDB...');
-    console.log('MongoDB URI:', process.env.MONGODB_URI ? 'URI exists' : 'URI is missing');
+    console.log('Checking MongoDB connection...');
     
-    await mongoose.connect(process.env.MONGODB_URI as string);
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI is not defined in environment variables');
+    }
+
+    if (mongoose.connections[0].readyState) {
+      console.log('Using existing MongoDB connection');
+      return;
+    }
+
+    console.log('Attempting to connect to MongoDB...');
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log('Successfully connected to MongoDB');
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    throw error; // Re-throw to handle it in the handler
+    throw error;
   }
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log('API Route accessed, method:', req.method);
-  
   try {
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    );
+
+    // Handle OPTIONS request
+    if (req.method === 'OPTIONS') {
+      res.status(200).end();
+      return;
+    }
+
+    console.log('API Route accessed, method:', req.method);
     await connectDB();
 
     if (req.method === 'POST') {
       console.log('Received message data:', {
         ...req.body,
-        email: req.body.email ? '***@***.***' : 'missing' // Hide email for privacy
+        email: req.body.email ? '***@***.***' : 'missing'
       });
 
+      if (!req.body.name || !req.body.email || !req.body.message) {
+        return res.status(400).json({ 
+          error: 'Missing required fields',
+          details: {
+            name: !req.body.name ? 'Name is required' : null,
+            email: !req.body.email ? 'Email is required' : null,
+            message: !req.body.message ? 'Message is required' : null
+          }
+        });
+      }
+
       try {
-        const { name, email, subject, message } = req.body;
         const newMessage = new Message({
-          name,
-          email,
-          subject,
-          message
+          name: req.body.name,
+          email: req.body.email,
+          subject: req.body.subject,
+          message: req.body.message
         });
         
         console.log('Attempting to save message...');
         await newMessage.save();
         console.log('Message saved successfully');
         
-        res.status(201).json({ message: 'Message sent successfully!' });
+        return res.status(201).json({ message: 'Message sent successfully!' });
       } catch (error) {
         console.error('Error saving message:', error);
-        res.status(500).json({ 
+        return res.status(500).json({ 
           error: 'Error sending message. Please try again.',
           details: error instanceof Error ? error.message : 'Unknown error'
         });
@@ -70,18 +98,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.log('Fetching messages...');
         const messages = await Message.find().sort({ createdAt: -1 });
         console.log(`Found ${messages.length} messages`);
-        res.json(messages);
+        return res.status(200).json(messages);
       } catch (error) {
         console.error('Error fetching messages:', error);
-        res.status(500).json({ error: 'Error fetching messages' });
+        return res.status(500).json({ error: 'Error fetching messages' });
       }
     } else {
-      res.setHeader('Allow', ['POST', 'GET']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
+      return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
     }
   } catch (error) {
     console.error('Top level error:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Server error',
       details: error instanceof Error ? error.message : 'Unknown error'
     });

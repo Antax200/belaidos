@@ -69,7 +69,17 @@ const Contact: React.FC = () => {
           body: JSON.stringify(formData),
         });
 
-        const data = await response.json();
+        let data;
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+          data = await response.json();
+        } else {
+          // If response is not JSON, get the text
+          const text = await response.text();
+          console.error('Received non-JSON response:', text);
+          throw new Error('Server error: Received non-JSON response');
+        }
+
         console.log('Server response:', data);
         
         if (!response.ok) {
