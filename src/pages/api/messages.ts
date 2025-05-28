@@ -15,45 +15,75 @@ const Message = mongoose.models.Message || mongoose.model('Message', messageSche
 
 // Connect to MongoDB
 const connectDB = async () => {
-  if (mongoose.connections[0].readyState) return;
+  if (mongoose.connections[0].readyState) {
+    console.log('Using existing MongoDB connection');
+    return;
+  }
 
   try {
+    console.log('Attempting to connect to MongoDB...');
+    console.log('MongoDB URI:', process.env.MONGODB_URI ? 'URI exists' : 'URI is missing');
+    
     await mongoose.connect(process.env.MONGODB_URI as string);
-    console.log('Connected to MongoDB');
+    console.log('Successfully connected to MongoDB');
   } catch (error) {
     console.error('MongoDB connection error:', error);
+    throw error; // Re-throw to handle it in the handler
   }
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await connectDB();
+  console.log('API Route accessed, method:', req.method);
+  
+  try {
+    await connectDB();
 
-  if (req.method === 'POST') {
-    try {
-      const { name, email, subject, message } = req.body;
-      const newMessage = new Message({
-        name,
-        email,
-        subject,
-        message
+    if (req.method === 'POST') {
+      console.log('Received message data:', {
+        ...req.body,
+        email: req.body.email ? '***@***.***' : 'missing' // Hide email for privacy
       });
-      
-      await newMessage.save();
-      res.status(201).json({ message: 'Message sent successfully!' });
-    } catch (error) {
-      console.error('Error saving message:', error);
-      res.status(500).json({ error: 'Error sending message. Please try again.' });
+
+      try {
+        const { name, email, subject, message } = req.body;
+        const newMessage = new Message({
+          name,
+          email,
+          subject,
+          message
+        });
+        
+        console.log('Attempting to save message...');
+        await newMessage.save();
+        console.log('Message saved successfully');
+        
+        res.status(201).json({ message: 'Message sent successfully!' });
+      } catch (error) {
+        console.error('Error saving message:', error);
+        res.status(500).json({ 
+          error: 'Error sending message. Please try again.',
+          details: error instanceof Error ? error.message : 'Unknown error'
+        });
+      }
+    } else if (req.method === 'GET') {
+      try {
+        console.log('Fetching messages...');
+        const messages = await Message.find().sort({ createdAt: -1 });
+        console.log(`Found ${messages.length} messages`);
+        res.json(messages);
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+        res.status(500).json({ error: 'Error fetching messages' });
+      }
+    } else {
+      res.setHeader('Allow', ['POST', 'GET']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-  } else if (req.method === 'GET') {
-    try {
-      const messages = await Message.find().sort({ createdAt: -1 });
-      res.json(messages);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-      res.status(500).json({ error: 'Error fetching messages' });
-    }
-  } else {
-    res.setHeader('Allow', ['POST', 'GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+  } catch (error) {
+    console.error('Top level error:', error);
+    res.status(500).json({ 
+      error: 'Server error',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 } 
