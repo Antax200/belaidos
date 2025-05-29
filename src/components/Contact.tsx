@@ -61,12 +61,14 @@ const Contact: React.FC = () => {
       setErrors({});
       
       try {
-        const response = await fetch('https://belaidos-q259cvgp8-abdelhakkidbelaid-gmailcoms-projects.vercel.app/api/messages', {
+        const response = await fetch('http://localhost:5000/api/messages', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Origin': window.location.origin
           },
+          credentials: 'include',
           body: JSON.stringify(formData),
         });
 

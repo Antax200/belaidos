@@ -30,19 +30,28 @@ console.log('Environment variables loaded:', {
 const app = express();
 
 // CORS configuration
+const allowedOrigins = [
+  'http://localhost:5173',  // Vite dev server
+  'http://localhost:3000',  // Alternative local dev
+  'https://www.belaido.art', // Production
+  'https://belaido.art'     // Production without www
+];
+
 const corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://www.belaido.art', 'http://localhost:3000', 'http://localhost:5173'];
     // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin) {
+      return callback(null, true);
+    }
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'Origin'],
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -50,19 +59,22 @@ const corsOptions = {
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
-// Add headers middleware as a backup
+// Pre-flight requests
+app.options('*', cors(corsOptions));
+
+// Additional headers middleware
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (origin && corsOptions.origin(origin, (err, allowed) => allowed)) {
+  if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, Origin');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   
-  // Handle preflight requests
+  // Handle preflight
   if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
+    return res.status(200).end();
   }
   next();
 });
@@ -81,7 +93,7 @@ const mongooseOptions = {
   useUnifiedTopology: true,
   serverSelectionTimeoutMS: 10000,
   socketTimeoutMS: 45000,
-  family: 4, // Use IPv4, skip trying IPv6
+  family: 4,
   retryWrites: true,
   w: 'majority'
 };
